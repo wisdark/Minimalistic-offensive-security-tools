@@ -1,3 +1,69 @@
+# Minimalistic TCP and UDP port scanners<br>(port-scan-tcp.ps1 | port-scan-udp.ps1)
+
+A simple yet powerful TCP and UDP port scanners:
+* Detection of open, closed and filtered ports (both TCP and UDP)
+* Ability to scan a single host, network range or a list of hosts in a file
+* Adjustable timeout values for effective and reliable port scanning
+
+Despite the minimalistic design, both port scanners keep track of everything by using a simple state file (scanresults.txt) which is created in the current working directory. This allows the scanners to be easily resumed if they were interrupted or to skip already scanned hosts / ports.
+
+See the main article for detailed description: https://www.infosecmatter.com/minimalistic-tcp-and-udp-port-scanner/
+
+## Usage and examples
+```
+Import-Module .\port-scan-tcp.ps1
+Import-Module .\port-scan-udp.ps1
+
+# Usage:
+port-scan-tcp <host(s)> <port(s)>
+port-scan-udp <host(s)> <port(s)>
+```
+
+**Port check of a single host for port tcp/80 (HTTP)**
+```
+port-scan-tcp 192.168.205.15 80
+```
+
+**Scanning a single host for common TCP ports**
+```
+port-scan-tcp 10.10.0.1 (21,22,23,25,80,443,445,3389)
+```
+
+**Scanning a list of hosts in a file for port tcp/22 (SSH)**
+```
+port-scan-tcp (gc .\computers.txt) 22
+```
+
+**Scanning a network range /24 for port tcp/445 (SMB)**
+```
+0..255 | foreach { port-scan-tcp 192.168.204.$_ 445 }
+```
+
+**Scanning a single host for common UDP services**
+```
+test-port-udp 192.168.205.15 (53,161,623)
+```
+
+**Scanning a network range /24 for port udp/161 (SNMP)**
+```
+0..255 | foreach { test-port-udp 10.10.0.$_ 161 }
+```
+
+**Note**: The port-scan-tcp-compat.ps1 version is for older systems without having .NET 4.5 installed.
+
+## Screenshot
+
+**Scanning a network range for selected TCP ports**
+```
+0..255 | foreach { port-scan-tcp 192.168.204.$_ (22,80,445) }
+```
+
+![portscan-network-range-multiple-ports2](https://user-images.githubusercontent.com/60963123/84473338-f0e90c00-ac99-11ea-937d-9593a0035fd7.png)
+
+For more information, visit https://www.infosecmatter.com/minimalistic-tcp-and-udp-port-scanner/
+
+---
+
 # Minimalistic SMB login bruteforcer (smblogin.ps1)
 
 A simple SMB login attack and password spraying tool.
